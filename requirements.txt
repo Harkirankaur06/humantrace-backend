@@ -1,0 +1,17 @@
+pydantic
+flask
+numpy
+pandas
+scikit-learn
+spacy
+textstat
+sentence-transformers
+transformers
+torch
+pytest
+jupyter
+matplotlib
+seaborn
+shap
+xgboost
+lightgbm

@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: humantrace
+Version: 0.1.0
+Summary: Explainable AI-powered authorship intelligence platform
+Author: Harkiran Kaur
+Requires-Python: >=3.10
+Requires-Dist: pydantic
+Requires-Dist: flask
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Requires-Dist: spacy
+Requires-Dist: textstat
+Requires-Dist: sentence-transformers
+Requires-Dist: transformers
+Requires-Dist: torch

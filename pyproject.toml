@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "humantrace"
+version = "0.1.0"
+description = "Explainable AI-powered authorship intelligence platform"
+authors = [
+    {name = "Harkiran Kaur"}
+]
+
+requires-python = ">=3.10"
+
+
+dependencies = [
+    "pydantic",
+    "flask",
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "spacy",
+    "textstat",
+    "sentence-transformers",
+    "transformers",
+    "torch"
+]
+
+
+[tool.setuptools.packages.find]
+where = ["."]

@@ -1,0 +1,10 @@
+pydantic
+flask
+numpy
+pandas
+scikit-learn
+spacy
+textstat
+sentence-transformers
+transformers
+torch
