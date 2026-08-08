@@ -3,11 +3,8 @@ from typing import List, Dict, Any
 
 from pydantic import BaseModel, Field
 
+
 class EssayDocument(BaseModel):
-    """
-    Internal representation of an essay.
-    Created after preprocessing.
-    """
 
     raw_text: str = Field(
         description="Original user input"
@@ -42,25 +39,22 @@ class EssayDocument(BaseModel):
         default_factory=list
     )
 
-# Original spaCy Token objects.
-# Used by the feature extraction engine for
-# POS, dependency, lemma, stop-word, etc. analysis.
-doc_tokens: List[Any] = Field(
-    default_factory=list
-)
+    doc_tokens: List[Any] = Field(
+        default_factory=list
+    )
 
-metadata: Dict[str, Any] = Field(
-    default_factory=dict
-)
+    metadata: Dict[str, Any] = Field(
+        default_factory=dict
+    )
 
-created_at: datetime = Field(
-    default_factory=datetime.utcnow
-)
+    created_at: datetime = Field(
+        default_factory=datetime.utcnow
+    )
 
-@property
-def word_count(self) -> int:
-    return len(self.tokens)
+    @property
+    def word_count(self) -> int:
+        return len(self.tokens)
 
-@property
-def sentence_count(self) -> int:
-    return len(self.sentences)
+    @property
+    def sentence_count(self) -> int:
+        return len(self.sentences)
