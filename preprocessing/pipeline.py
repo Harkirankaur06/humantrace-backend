@@ -58,6 +58,7 @@ def preprocess(
         extract_pos_tags(doc),
 
         dependencies=
-        extract_dependencies(doc)
+        extract_dependencies(doc),
 
+        doc_tokens=list(doc)
     )
