@@ -1,0 +1,13 @@
+{
+  "essay_id": "unique identifier",
+  "text": "essay text",
+  "label": "human | ai | ai_polished | human_revised",
+  "source": "where the original text came from",
+  "topic": "essay topic",
+  "word_count": 0,
+  "language": "en",
+  "generation_model": null,
+  "generation_temperature": null,
+  "generation_prompt_id": null,
+  "parent_essay_id": null
+}
