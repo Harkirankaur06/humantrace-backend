@@ -20,6 +20,7 @@ INPUT_FILES = [
     PROCESSED_DIR / "raid_normalized.jsonl",
     PROCESSED_DIR / "hc3_ai_normalized.jsonl",
     PROCESSED_DIR / "hc3_human_normalized.jsonl",
+    PROCESSED_DIR / "wikipedia_normalized.jsonl",
 ]
 
 
