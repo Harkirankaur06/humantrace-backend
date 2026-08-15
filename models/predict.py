@@ -15,12 +15,7 @@ from transformers import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-MODEL_DIR = (
-    PROJECT_ROOT
-    / "models"
-    / "saved"
-    / "humantrace-distilbert"
-)
+MODEL_ID = "harkirankaur/humantrace-distilbert"
 
 MAX_LENGTH = 512
 
@@ -32,13 +27,6 @@ MAX_LENGTH = 512
 class HumanTracePredictor:
 
     def __init__(self):
-
-        if not MODEL_DIR.exists():
-
-            raise FileNotFoundError(
-                "HumanTrace model not found.\n"
-                "Train the model first."
-            )
 
         self.device = torch.device(
             "cuda"
@@ -53,14 +41,14 @@ class HumanTracePredictor:
 
         self.tokenizer = (
             AutoTokenizer.from_pretrained(
-                str(MODEL_DIR)
+                MODEL_ID
             )
         )
 
         self.model = (
             AutoModelForSequenceClassification
             .from_pretrained(
-                str(MODEL_DIR)
+                MODEL_ID
             )
         )
 
