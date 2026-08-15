@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import os
 
 from models.predict import HumanTracePredictor
 
@@ -10,16 +9,8 @@ app = Flask(__name__)
 CORS(app)
 
 
-# Load the trained model once when the server starts.
-predictor = None
-
-def get_predictor():
-    global predictor
-
-    if predictor is None:
-        predictor = HumanTracePredictor()
-
-    return predictor
+# Load model once when server starts
+predictor = HumanTracePredictor()
 
 
 @app.route("/", methods=["GET"])
@@ -47,6 +38,7 @@ def predict():
         data = request.get_json()
 
         if not data:
+
             return jsonify({
                 "error": "Request body is required."
             }), 400
@@ -54,16 +46,18 @@ def predict():
         text = data.get("text")
 
         if not isinstance(text, str):
+
             return jsonify({
                 "error": "Text must be a string."
             }), 400
 
         if not text.strip():
+
             return jsonify({
                 "error": "Text cannot be empty."
             }), 400
 
-        result = get_predictor().predict(text)
+        result = predictor.predict(text)
 
         return jsonify(result), 200
 
@@ -73,9 +67,11 @@ def predict():
             "error": str(exc)
         }), 500
 
+
 if __name__ == "__main__":
+
     app.run(
-        host="0.0.0.0",
-        port=int(os.environ.get("PORT", 5000)),
-        debug=False
+        host="127.0.0.1",
+        port=5000,
+        debug=True
     )

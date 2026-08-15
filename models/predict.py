@@ -1,8 +1,6 @@
-import sys
 from pathlib import Path
 
 import torch
-
 from transformers import (
     AutoTokenizer,
     AutoModelForSequenceClassification,
@@ -10,19 +8,13 @@ from transformers import (
 
 
 # ============================================================
-# PATHS
+# MODEL
 # ============================================================
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-
-MODEL_ID = "harkirankaur/humantrace-distilbert"
+MODEL_NAME = "harkirankaur/humantrace-distilbert"
 
 MAX_LENGTH = 512
 
-
-# ============================================================
-# MODEL
-# ============================================================
 
 class HumanTracePredictor:
 
@@ -35,49 +27,41 @@ class HumanTracePredictor:
         )
 
         print(
-            f"Loading HumanTrace model "
+            f"Loading HumanTrace model from Hugging Face "
             f"on {self.device}..."
         )
 
-        self.tokenizer = (
-            AutoTokenizer.from_pretrained(
-                MODEL_ID
-            )
+        # Download from Hugging Face on first run.
+        # Afterwards Hugging Face caches it locally.
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            MODEL_NAME
         )
 
-        self.model = (
-            AutoModelForSequenceClassification
-            .from_pretrained(
-                MODEL_ID
-            )
+        self.model = AutoModelForSequenceClassification.from_pretrained(
+            MODEL_NAME
         )
 
-        self.model.to(
-            self.device
-        )
+        self.model.to(self.device)
 
         self.model.eval()
 
-    # --------------------------------------------------------
-    # Prediction
-    # --------------------------------------------------------
+        print("HumanTrace model loaded successfully.")
+
+    # ========================================================
+    # PREDICTION
+    # ========================================================
 
     def predict(
         self,
         text: str
     ) -> dict:
 
-        if not isinstance(
-            text,
-            str
-        ):
-
+        if not isinstance(text, str):
             raise TypeError(
                 "Text must be a string."
             )
 
         if not text.strip():
-
             raise ValueError(
                 "Text cannot be empty."
             )
@@ -90,10 +74,11 @@ class HumanTracePredictor:
             return_tensors="pt"
         )
 
+        # DistilBERT does not use token_type_ids.
+        encoding.pop("token_type_ids", None)
+
         encoding = {
-            key: value.to(
-                self.device
-            )
+            key: value.to(self.device)
             for key, value in encoding.items()
         }
 
@@ -108,13 +93,8 @@ class HumanTracePredictor:
                 dim=-1
             )[0]
 
-        human_probability = (
-            probabilities[0].item()
-        )
-
-        ai_probability = (
-            probabilities[1].item()
-        )
+        human_probability = probabilities[0].item()
+        ai_probability = probabilities[1].item()
 
         prediction = (
             "ai"
@@ -129,65 +109,40 @@ class HumanTracePredictor:
 
         return {
             "prediction": prediction,
-            "confidence": round(
-                confidence,
-                4
-            ),
-            "ai_probability": round(
-                ai_probability,
-                4
-            ),
-            "human_probability": round(
-                human_probability,
-                4
-            ),
+            "confidence": round(confidence, 4),
+            "ai_probability": round(ai_probability, 4),
+            "human_probability": round(human_probability, 4),
         }
 
 
 # ============================================================
-# CLI
+# CLI TEST
 # ============================================================
 
-def main():
+if __name__ == "__main__":
 
     predictor = HumanTracePredictor()
 
     print()
-    print(
-        "=" * 60
-    )
-    print(
-        "HumanTrace Detector"
-    )
-    print(
-        "Type 'exit' to quit."
-    )
-    print(
-        "=" * 60
-    )
+    print("=" * 60)
+    print("HumanTrace Detector")
+    print("Type 'exit' to quit.")
+    print("=" * 60)
 
     while True:
 
-        print()
-
-        text = input(
-            "Enter text: "
-        )
+        text = input("\nEnter text: ")
 
         if text.lower().strip() == "exit":
             break
 
         try:
 
-            result = predictor.predict(
-                text
-            )
+            result = predictor.predict(text)
 
             print()
-
             print(
-                f"Prediction : "
-                f"{result['prediction']}"
+                f"Prediction : {result['prediction']}"
             )
 
             print(
@@ -207,10 +162,4 @@ def main():
 
         except Exception as exc:
 
-            print(
-                f"Error: {exc}"
-            )
-
-
-if __name__ == "__main__":
-    main()
+            print(f"Error: {exc}")
