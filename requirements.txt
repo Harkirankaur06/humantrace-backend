@@ -3,3 +3,4 @@ flask-cors==6.0.1
 transformers==4.55.4
 torch
 huggingface-hub
+gunicorn
