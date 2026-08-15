@@ -11,7 +11,15 @@ CORS(app)
 
 
 # Load the trained model once when the server starts.
-predictor = HumanTracePredictor()
+predictor = None
+
+def get_predictor():
+    global predictor
+
+    if predictor is None:
+        predictor = HumanTracePredictor()
+
+    return predictor
 
 
 @app.route("/", methods=["GET"])
@@ -55,7 +63,7 @@ def predict():
                 "error": "Text cannot be empty."
             }), 400
 
-        result = predictor.predict(text)
+        result = get_predictor().predict(text)
 
         return jsonify(result), 200
 
